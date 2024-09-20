@@ -7,7 +7,9 @@ import "leaflet/dist/leaflet.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
 
-const ProviderMap = React.lazy(() => import("./pages/ProviderMap"));
+const ProviderMap = React.lazy(() =>
+  import("./pages/ProviderMap/supervisor.js")
+);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
