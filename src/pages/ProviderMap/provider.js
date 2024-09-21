@@ -18,8 +18,10 @@ const Provider = ({
   setSelectedProvider,
 }) => {
   const [searchID, setSearchID] = useState("");
+
   const handleSearch = () => {
-    fetch(`/queryCareGiver?searchID=${searchID}`, {
+    console.log(searchID);
+    fetch(`/queryCareGiver?caregiverid=${searchID}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -27,16 +29,23 @@ const Provider = ({
     })
       .then((response) => response.json())
       .then((data) => {
-        if (data.length > 0) {
-          setSelectedProvider(data);
+        console.log("HELLO", data);
+        if (data && data.geodata) {
+          // Splice and convert geodata string into latitude and longitude
+          const [lat, lon] = data.geodata.split(",").map(parseFloat);
+          data.geodata = [lat, lon]; // Set the converted geodata array
+          setSelectedProvider(data); // Update the selected provider with the new data
         } else {
-          setSelectedProvider([]);
+          console.log(data);
+          setSelectedProvider(null); // Handle no data found
         }
       })
       .catch((error) => {
         console.error("Error fetching provider:", error);
         setSelectedProvider([]); // In case of error, show an empty list
       });
+
+    console.log(selectedProvider);
   };
   return (
     <Container sx={{ marginTop: "20px" }}>
