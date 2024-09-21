@@ -26,4 +26,25 @@ def getActive():
 #Call this endpoint with this example /clockOut?caregiverid={id}
 @app.route("/clockOut", methods=['PUT'])
 def clockOut():
-    remove()
+    queryCg = request.args.get('caregiverid')
+    remove(queryCg)
+
+    return f'removed {queryCg}'
+
+@app.route("/queryCareGiver", methods=['GET'])
+def getCareGiver():
+    queryCg = request.args.get('caregiverid')
+    return getByCaregiverID(queryCg)
+
+@app.route("/changeAlert", methods=['PUT'])
+def changeAlert():
+    queryCg = request.args.get('caregiverid')
+    alert(queryCg)
+
+    return f'changed alert for {queryCg}'
+
+    
+
+
+
+
