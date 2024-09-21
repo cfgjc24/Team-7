@@ -9,23 +9,23 @@ from app import app
 import requests
 
 load_dotenv()
-GOOGLE_CLIENT_ID = "889922476870-nsci7bs2nil5s7s75g0fb9fen5mfn5o3.apps.googleusercontent.com"
+GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
 
 oauth = Flow.from_client_config(
     {
       "web": {
-        "client_id": "889922476870-nsci7bs2nil5s7s75g0fb9fen5mfn5o3.apps.googleusercontent.com",
+        "client_id": GOOGLE_CLIENT_ID,
         "project_id": "jpmc-code-for-good",
         "auth_uri": "https://accounts.google.com/o/oauth2/auth",
         "token_uri": "https://oauth2.googleapis.com/token",
         "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-        "client_secret": "",
+        "client_secret": os.getenv("GOOGLE_CLIENT_SECRET"),
         "redirect_uris": [
-          "http://localhost:5000/callback"
+          os.getenv("GOOGLE_REDIRECT_URI")
         ]
       },
     },
-    redirect_uri="http://localhost:5000/callback",
+    redirect_uri=os.getenv("GOOGLE_REDIRECT_URI"),
     scopes=["https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/userinfo.email", "openid"])
 
 blueprint = Blueprint("home", __name__)
