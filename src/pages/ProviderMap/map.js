@@ -8,17 +8,7 @@ link.integrity = "sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=";
 link.crossOrigin = "anonymous";
 document.head.appendChild(link);
 
-const ProviderMap = () => {
-  const [positions, setPositions] = useState([]);
-
-  useEffect(() => {
-    setPositions([
-      [40.728157, -74.077644],
-      [41.728157, -73.077644],
-      [39.728157, -75.077644],
-    ]);
-  }, []);
-
+const ProviderMap = ({ positions, onMarkerClick }) => {
   return (
     <MapContainer
       center={[40.728157, -74.077644]}
@@ -30,7 +20,15 @@ const ProviderMap = () => {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       {positions.map((position, index) => (
-        <Marker key={index} position={position}></Marker>
+        <Marker
+          key={index}
+          position={position.geodata}
+          eventHandlers={{
+            click: () => {
+              onMarkerClick(position);
+            },
+          }}
+        />
       ))}
     </MapContainer>
   );
