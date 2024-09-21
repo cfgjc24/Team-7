@@ -11,6 +11,7 @@ import Supervisor from "./pages/ProviderMap/supervisor.js"; /*Automatically load
 import LoginSignup from "./pages/signin/LoginSignup/LoginSignup.jsx"; /*Automatically loads in page*/
 //const ProviderMap = React.lazy(() => import("./pages/ProviderMap/supervisor.js"));
 // const ClockInPage = React.lazy(() => import("./pages/ClockInPage/clockin.js"));
+// comment out all react lazy
 const Home = React.lazy(() => import("./pages/Home/home.js"));
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
