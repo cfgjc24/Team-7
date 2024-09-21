@@ -6,6 +6,7 @@ import "leaflet/dist/leaflet.css";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
+import LoginSignup from "./pages/signin/LoginSignup/LoginSignup.jsx";
 
 const ProviderMap = React.lazy(() =>
   import("./pages/ProviderMap/supervisor.js")
