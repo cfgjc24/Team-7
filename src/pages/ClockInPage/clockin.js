@@ -4,14 +4,10 @@ import { Button, Container, Typography, Box, Select, InputLabel, MenuItem, FormC
 // ClockInOut Component
 const ClockInOut = ({ emailId }) => {
   const [status, setStatus] = useState('Not clocked in');
-  const [location, setLocation] = useState(null);
   const [locationString, setLocationString] = useState('');
   const [emergencyActive, setEmergencyActive] = useState(false);
   const [name, setName] = useState('');
   const [selectState, setSelectState] = useState('');
-
-  // State to store submitted information
-  const [submittedInfo, setSubmittedInfo] = useState({});
 
   // Get the user's location
   const getLocation = (callback) => {
@@ -19,10 +15,10 @@ const ClockInOut = ({ emailId }) => {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
-          const locationStr = `Latitude: ${latitude}, Longitude: ${longitude}`;
-          setLocation({ latitude, longitude });
-          setLocationString(locationStr);
-          console.log(locationStr);
+          // Create a location string with only numeric values
+          const locationStr = `${latitude.toFixed(6)}, ${longitude.toFixed(6)}`;
+          setLocationString(locationStr); // Update state with the actual coordinates
+          console.log(locationStr); // Log the location string
           if (callback) callback(locationStr);
         },
         (error) => {
@@ -39,6 +35,18 @@ const ClockInOut = ({ emailId }) => {
     const isActive = event.target.checked;
     setEmergencyActive(isActive);
     alert(`Emergency status: ${isActive ? 'Emergency' : 'Non-Emergency'}`);
+    
+    fetch('/api/changeAlert', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ caregiverid: emailId }) // Include caregiverid in the body
+    })
+    .then(response => response.text()) // Assuming the response is just a text message
+    .then(data => console.log(data))
+    .catch(error => console.error('Error:', error));
+  };
   };
 
   // Get the current time
@@ -53,49 +61,75 @@ const ClockInOut = ({ emailId }) => {
       const time = getCurrTime();
       const info = {
         name,
-        location: locationString,
-        emailId, // Use the passed emailId
+        location: locationString, // Updated with the actual digits of location
+        emailId,
         currentState: selectState,
         timestamp: time,
         active: true // Active when clocking in
       };
-      setSubmittedInfo(info);
       alert(`Clocked In: ${JSON.stringify(info)}`);
       setStatus(`Clocked in at ${time}`);
-    });
-}
-    
-//     fetch('api/clockIn', {
-//         method: 'POST',
-//         headers: {
-//           'Content-Type': 'application/json'
-//     },
-//         body: JSON.stringify({
-//           data: caregiverID, name, location, , currentState, timestamp, active
-//         })
-//       })
-//       .then(response => response.json())
-//       .then(data => console.log(data))
-//       .catch(error => console.error('Error:', error));
+
+
       
-//   };
-  
+      fetch('/api/clockIn', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          caregiverID: emailId,
+          state: selectState,
+          geodata: locationString, // Use the actual locationString
+          client: name,
+          timestamp: time,
+          active: true // Active when clocking in
+        })
+      })
+      .then(response => response.json())
+      .then(data => console.log(data))
+      .catch(error => console.error('Error:', error));
+    });
+  };
 
   // Handle Clock Out button click
   const handleClockOut = () => {
     const time = getCurrTime();
     const info = {
       name,
-      location: locationString,
+      location: locationString, // Updated with the actual digits of location
       emailId,
       currentState: selectState,
       timestamp: time,
       active: false // Inactive when clocking out
     };
-    setSubmittedInfo(info);
     alert(`Clocked Out: ${JSON.stringify(info)}`);
     setStatus(`Clocked out at ${time}`);
-  };
+    // Uncomment and modify the fetch request as needed
+    /*
+    fetch('api/clockOut', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(info)
+    })
+    .then(response => response.json())
+    .then(data => console.log(data))
+    .catch(error => console.error('Error:', error));
+    */
+    fetch(`127.0.0.1:8080/clockOut?caregiverid=${emailId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ caregiverid: emailId }) // Include caregiverid in the body
+    })
+    .then(response => response.text()) // Assuming the response is just a text message
+    .then(data => console.log(data))
+    .catch(error => console.error('Error:', error));
+
+
 
   return (
     <Container maxWidth="sm">
@@ -173,7 +207,7 @@ const ClockInOut = ({ emailId }) => {
       </Box>
     </Container>
   );
-};
+};  
 
 // BasicSelect Component
 const BasicSelect = ({ setSelectState }) => {
@@ -222,4 +256,3 @@ const BasicTextFields = ({ setName }) => {
 export default ClockInOut;
 export { BasicSelect };
 export { BasicTextFields };
-
