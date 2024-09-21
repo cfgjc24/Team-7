@@ -130,3 +130,7 @@ dist
 .pnp.*
 
 __pycache__
+
+.venv
+venv
+env
