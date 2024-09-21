@@ -1,14 +1,26 @@
-import React, { useState } from 'react';
-import { Button, Container, Typography, Box, Select, InputLabel, MenuItem, FormControl, TextField, Switch, FormControlLabel } from '@mui/material';
+import React, { useState } from "react";
+import {
+  Button,
+  Container,
+  Typography,
+  Box,
+  Select,
+  InputLabel,
+  MenuItem,
+  FormControl,
+  TextField,
+  Switch,
+  FormControlLabel,
+} from "@mui/material";
 
 // ClockInOut Component
 const ClockInOut = ({ emailId }) => {
-  const [status, setStatus] = useState('Not clocked in');
+  const [status, setStatus] = useState("Not clocked in");
   const [location, setLocation] = useState(null);
-  const [locationString, setLocationString] = useState('');
+  const [locationString, setLocationString] = useState("");
   const [emergencyActive, setEmergencyActive] = useState(false);
-  const [name, setName] = useState('');
-  const [selectState, setSelectState] = useState('');
+  const [name, setName] = useState("");
+  const [selectState, setSelectState] = useState("");
 
   // State to store submitted information
   const [submittedInfo, setSubmittedInfo] = useState({});
@@ -19,18 +31,18 @@ const ClockInOut = ({ emailId }) => {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
-          const locationStr = `Latitude: ${latitude}, Longitude: ${longitude}`;
+          const locationStr = `${latitude},${longitude}`;
           setLocation({ latitude, longitude });
           setLocationString(locationStr);
           console.log(locationStr);
           if (callback) callback(locationStr);
         },
         (error) => {
-          console.error('Error getting user location:', error);
+          console.error("Error getting user location:", error);
         }
       );
     } else {
-      console.error('Geolocation is not supported by this browser.');
+      console.error("Geolocation is not supported by this browser.");
     }
   };
 
@@ -38,7 +50,7 @@ const ClockInOut = ({ emailId }) => {
   const handleEmergencyToggle = (event) => {
     const isActive = event.target.checked;
     setEmergencyActive(isActive);
-    alert(`Emergency status: ${isActive ? 'Emergency' : 'Non-Emergency'}`);
+    alert(`Emergency status: ${isActive ? "Emergency" : "Non-Emergency"}`);
   };
 
   // Get the current time
@@ -57,29 +69,28 @@ const ClockInOut = ({ emailId }) => {
         emailId, // Use the passed emailId
         currentState: selectState,
         timestamp: time,
-        active: true // Active when clocking in
+        active: true, // Active when clocking in
       };
       setSubmittedInfo(info);
       alert(`Clocked In: ${JSON.stringify(info)}`);
       setStatus(`Clocked in at ${time}`);
     });
-}
-    
-//     fetch('api/clockIn', {
-//         method: 'POST',
-//         headers: {
-//           'Content-Type': 'application/json'
-//     },
-//         body: JSON.stringify({
-//           data: caregiverID, name, location, , currentState, timestamp, active
-//         })
-//       })
-//       .then(response => response.json())
-//       .then(data => console.log(data))
-//       .catch(error => console.error('Error:', error));
-      
-//   };
-  
+  };
+
+  //     fetch('api/clockIn', {
+  //         method: 'POST',
+  //         headers: {
+  //           'Content-Type': 'application/json'
+  //     },
+  //         body: JSON.stringify({
+  //           data: caregiverID, name, location, , currentState, timestamp, active
+  //         })
+  //       })
+  //       .then(response => response.json())
+  //       .then(data => console.log(data))
+  //       .catch(error => console.error('Error:', error));
+
+  //   };
 
   // Handle Clock Out button click
   const handleClockOut = () => {
@@ -90,7 +101,7 @@ const ClockInOut = ({ emailId }) => {
       emailId,
       currentState: selectState,
       timestamp: time,
-      active: false // Inactive when clocking out
+      active: false, // Inactive when clocking out
     };
     setSubmittedInfo(info);
     alert(`Clocked Out: ${JSON.stringify(info)}`);
@@ -104,36 +115,46 @@ const ClockInOut = ({ emailId }) => {
           TimeSheet
         </Typography>
 
-        <Box mt={5} mb={5} display="flex" flexDirection="column" alignItems="center">
-          <Typography variant="h6">
-            Status: {status}
-          </Typography>
-          <Button 
-            variant="contained" 
-            color="primary" 
+        <Box
+          mt={5}
+          mb={5}
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+        >
+          <Typography variant="h6">Status: {status}</Typography>
+          <Button
+            variant="contained"
+            color="primary"
             onClick={handleClockIn}
-            style={{ marginRight: '10px' }}
+            style={{ marginRight: "10px" }}
           >
             Clock In
           </Button>
           <Typography variant="body1" gutterBottom>
-            Click to clock in to shift 
+            Click to clock in to shift
           </Typography>
-          <Button 
-            variant="contained" 
-            color="secondary" 
+          <Button
+            variant="contained"
+            color="secondary"
             onClick={handleClockOut}
-            style={{ marginRight: '10px' }}
+            style={{ marginRight: "10px" }}
           >
             Clock Out
           </Button>
           <Typography variant="body1" gutterBottom>
-            Click to clock out of shift 
+            Click to clock out of shift
           </Typography>
         </Box>
       </Box>
 
-      <Box mt={5} mb={5} display="flex" flexDirection="column" alignItems="center">
+      <Box
+        mt={5}
+        mb={5}
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+      >
         <FormControlLabel
           control={
             <Switch
@@ -149,23 +170,25 @@ const ClockInOut = ({ emailId }) => {
         </Typography>
       </Box>
 
-      <Typography align="left">
-        Enter your client name below
-      </Typography>
-      <BasicTextFields setName={setName} /> 
+      <Typography align="left">Enter your client name below</Typography>
+      <BasicTextFields setName={setName} />
 
-      <Typography align="left">
-        Enter your shift status below
-      </Typography>
-      <BasicSelect setSelectState={setSelectState} />  
+      <Typography align="left">Enter your shift status below</Typography>
+      <BasicSelect setSelectState={setSelectState} />
 
-      <Box mt={2} mb={2} display="flex" flexDirection="column" alignItems="center">
-        <Button 
-          variant="contained" 
+      <Box
+        mt={2}
+        mb={2}
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+      >
+        <Button
+          variant="contained"
           onClick={handleClockIn} // Submit button calls clock in for demonstration
-          style={{ 
-            backgroundColor: 'green',  
-            color: 'white'
+          style={{
+            backgroundColor: "green",
+            color: "white",
           }}
         >
           Submit
@@ -184,10 +207,7 @@ const BasicSelect = ({ setSelectState }) => {
   return (
     <FormControl fullWidth>
       <InputLabel id="state-select-label">Current State</InputLabel>
-      <Select
-        labelId="state-select-label"
-        onChange={handleChange}
-      >
+      <Select labelId="state-select-label" onChange={handleChange}>
         <MenuItem value="Recreational External Activity">Recreational</MenuItem>
         <MenuItem value="Leisure At Home Activity">Leisure</MenuItem>
         <MenuItem value="Emotional Support">Emotional</MenuItem>
@@ -205,15 +225,15 @@ const BasicTextFields = ({ setName }) => {
   return (
     <Box
       component="form"
-      sx={{ '& > :not(style)': { m: 1, width: '63ch' } }}
+      sx={{ "& > :not(style)": { m: 1, width: "63ch" } }}
       noValidate
       autoComplete="off"
     >
-      <TextField 
-        id="outlined-basic" 
-        label="Name" 
-        variant="outlined" 
-        onChange={handleNameChange} 
+      <TextField
+        id="outlined-basic"
+        label="Name"
+        variant="outlined"
+        onChange={handleNameChange}
       />
     </Box>
   );
@@ -222,4 +242,3 @@ const BasicTextFields = ({ setName }) => {
 export default ClockInOut;
 export { BasicSelect };
 export { BasicTextFields };
-

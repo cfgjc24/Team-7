@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Container,
   TextField,
@@ -17,15 +17,37 @@ const Provider = ({
   selectedProvider,
   setSelectedProvider,
 }) => {
+  const [searchID, setSearchID] = useState("");
+  const handleSearch = () => {
+    fetch(`/queryCareGiver?searchID=${searchID}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.length > 0) {
+          setSelectedProvider(data);
+        } else {
+          setSelectedProvider([]);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching provider:", error);
+        setSelectedProvider([]); // In case of error, show an empty list
+      });
+  };
   return (
     <Container sx={{ marginTop: "20px" }}>
       <h2>Find Provider</h2>
       <TextField
         id="search-provider"
-        label="Search by name"
+        label="Search by ID"
         variant="outlined"
+        onChange={(e) => setSearchID(e.target.value)}
       />
-      <IconButton>
+      <IconButton onClick={handleSearch}>
         <ManageSearchIcon
           style={{
             fontSize: 50,
@@ -39,7 +61,9 @@ const Provider = ({
       <hr />
       {selectedProvider ? (
         <div>
-          <Typography variant="h6">{selectedProvider.caregivername}</Typography>
+          <Typography variant="h6">
+            {selectedProvider?.caregivername || selectedProvider?.caregiverID}
+          </Typography>
           <Typography>Phone: {selectedProvider.phonenumber}</Typography>
           <Typography>State: {selectedProvider.state}</Typography>
           <Typography>Client: {selectedProvider.client}</Typography>
@@ -68,9 +92,9 @@ const Provider = ({
       ) : (
         <List>
           {providers.map((provider) => (
-            <React.Fragment key={provider.caregiverid}>
+            <React.Fragment key={provider.caregiverID}>
               <ListItem button onClick={() => onProviderSelect(provider)}>
-                <ListItemText primary={provider.caregivername} />
+                <ListItemText primary={provider.caregiverID} />
               </ListItem>
               <Divider component="li" />
             </React.Fragment>
