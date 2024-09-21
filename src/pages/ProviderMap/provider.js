@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
   Container,
   TextField,
@@ -6,14 +6,15 @@ import {
   List,
   ListItem,
   ListItemText,
+  Typography,
 } from "@mui/material";
-const Provider = () => {
-  const [providerList, setProviderList] = useState([]);
 
-  useEffect(() => {
-    setProviderList(["provider 1", "provider 2"]);
-  }, []);
-
+const Provider = ({
+  providers,
+  onProviderSelect,
+  selectedProvider,
+  setSelectedProvider,
+}) => {
   return (
     <Container>
       <p>Find Provider</p>
@@ -22,18 +23,37 @@ const Provider = () => {
         label="Search by name"
         variant="outlined"
       />
-      <hr></hr>
-      <List>
-        {providerList.map((provider, index) => (
-          <React.Fragment key={index}>
-            <ListItem>
-              <ListItemText primary={provider} />
-            </ListItem>
-            <Divider component="li" />
-          </React.Fragment>
-        ))}
-      </List>
+      <hr />
+      {selectedProvider ? (
+        <div>
+          <Typography variant="h6">{selectedProvider.caregivername}</Typography>
+          <Typography>Phone: {selectedProvider.phonenumber}</Typography>
+          <Typography>State: {selectedProvider.state}</Typography>
+          <Typography>Client: {selectedProvider.client}</Typography>
+          <Typography>
+            Active: {selectedProvider.active ? "Yes" : "No"}
+          </Typography>
+          <Typography>
+            Coordinates: {selectedProvider.geodata.join(", ")}
+          </Typography>
+          <button onClick={() => setSelectedProvider(null)}>
+            Back to List
+          </button>
+        </div>
+      ) : (
+        <List>
+          {providers.map((provider) => (
+            <React.Fragment key={provider.caregiverid}>
+              <ListItem button onClick={() => onProviderSelect(provider)}>
+                <ListItemText primary={provider.caregivername} />
+              </ListItem>
+              <Divider component="li" />
+            </React.Fragment>
+          ))}
+        </List>
+      )}
     </Container>
   );
 };
+
 export default Provider;
