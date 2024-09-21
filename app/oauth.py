@@ -5,7 +5,6 @@ from google_auth_oauthlib.flow import Flow
 import google.auth.transport.requests
 from flask import session, redirect, request, Blueprint, abort
 from pip._vendor import cachecontrol
-from app import app
 import requests
 
 load_dotenv()
@@ -66,7 +65,7 @@ def callback():
     except Exception:
         return False
     
-@app.route("/logout")
+@blueprint.route("/logout")
 def logout():
     session.clear()
     return redirect("/")
