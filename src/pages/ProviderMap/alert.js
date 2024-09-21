@@ -14,8 +14,8 @@ const AlertLayout = () => {
   }, []);
 
   return (
-    <Container>
-      <p>Alerts</p>
+    <Container sx={{ marginTop: "20px" }}>
+      <h2>Alerts</h2>
       <hr></hr>
       <List>
         {alertList.map((alert, index) => (

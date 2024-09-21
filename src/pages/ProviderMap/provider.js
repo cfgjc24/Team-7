@@ -17,8 +17,8 @@ const Provider = ({
   setSelectedProvider,
 }) => {
   return (
-    <Container>
-      <p>Find Provider</p>
+    <Container sx={{ marginTop: "20px" }}>
+      <h2>Find Provider</h2>
       <TextField
         id="search-provider"
         label="Search by name"
