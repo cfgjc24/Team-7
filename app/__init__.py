@@ -1,7 +1,7 @@
 import os
 from flask import Flask, request, jsonify
 from .mongo import save, get, remove, alert, getByCaregiverID
-from . import db
+from .db import db
 from . import oauth
 from .mongo import save
 # For development.
