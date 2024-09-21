@@ -7,7 +7,7 @@ sessions = db["sessions"]
 caregivers = db["caregivers"]
 
 
-
+#if the caregiverID is already in the database, update the entry. Otherwise, insert a new entry
 def save(caregiverID, state, geodata, client, timestamp, active, alert):
     for session in sessions.find():
         if session.get('caregiverID', "") == caregiverID:
@@ -15,6 +15,7 @@ def save(caregiverID, state, geodata, client, timestamp, active, alert):
             return
     sessions.insert_one({'caregiverID': caregiverID, 'state': state, 'geodata': geodata, 'client': client, 'timestamp': timestamp, "active": active, "alert": alert})
 
+#returns all active users and all active users that have been alerted
 def get():
     activeUsers = []
     alertedUsers = []
@@ -33,6 +34,8 @@ def get():
             
     return activeUsers, alertedUsers
 
+
+#find the entry for the cargiverID if they are active
 def getByCaregiverID(caregiverID):
     res = [sessions.find_one({'caregiverID': caregiverID})]
     if not res:
