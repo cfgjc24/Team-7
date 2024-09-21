@@ -9,7 +9,14 @@ const iconEmergency = new L.Icon({
   shadowSize: null,
   shadowAnchor: null,
   iconSize: new L.Point(60, 75),
-  className: "leaflet-div-icon",
 });
 
-export { iconEmergency };
+const emergencyCircle = (position, map) => {
+  L.circle(position, {
+    color: "red",
+    fillColor: "#f03",
+    fillOpacity: 0.5,
+    radius: 500,
+  }).addTo(map);
+};
+export { iconEmergency, emergencyCircle };

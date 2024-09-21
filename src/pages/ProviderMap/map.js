@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { MapContainer, TileLayer, Marker } from "react-leaflet";
-import { iconEmergency } from "./icon";
+import { MapContainer, TileLayer, Marker, Circle } from "react-leaflet";
+import { iconEmergency, emergencyCircle } from "./icon";
+import { Emergency } from "@mui/icons-material";
 
 const link = document.createElement("link");
 link.rel = "stylesheet";
@@ -21,9 +22,12 @@ const ProviderMap = ({ positions, onMarkerClick }) => {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       {positions.map((position, index) => (
-        <Marker
-          key={index}
-          position={position.geodata}
+        <Circle
+          center={position.geodata}
+          color="red"
+          fillColor="#f03"
+          fillOpacity={0.5}
+          radius={500}
           eventHandlers={{
             click: () => {
               onMarkerClick(position);
