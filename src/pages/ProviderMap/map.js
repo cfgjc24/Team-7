@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { MapContainer, TileLayer, Marker } from "react-leaflet";
+import { iconEmergency } from "./icon";
 
 const link = document.createElement("link");
 link.rel = "stylesheet";
