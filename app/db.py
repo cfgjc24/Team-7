@@ -1,9 +1,15 @@
 import os
 from dotenv import load_dotenv
 from pymongo import MongoClient
+import certifi
 
-load_dotenv()
+dotenv_path = 'app/.env'
+load_dotenv(dotenv_path)
 
-CONNECTION_STRING = os.getenv("DB_CONNECTION_STRING")
-client = MongoClient(CONNECTION_STRING)
-db = client.get_database("dev")
+
+os.environ["PYTHONWARNINGS"] = "ignore:Unverified HTTPS request"
+
+mongo = MongoClient(os.getenv("DB_CONNECTION_STRING"), tlsCAFile=certifi.where())
+
+
+db = mongo['dev']
