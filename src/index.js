@@ -7,7 +7,7 @@ import "leaflet/dist/leaflet.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
 import ClockInOut from "./pages/ClockInPage/clockin.js"; /*Automatically loads in page*/
-const ProviderMap = React.lazy(() => import("./pages/ProviderMap"));
+const ProviderMap = React.lazy(() => import("./pages/ProviderMap/supervisor.js"));
 // const ClockInPage = React.lazy(() => import("./pages/ClockInPage/clockin.js"));
 const Home = React.lazy(() => import("./pages/Home/home.js"));
 
