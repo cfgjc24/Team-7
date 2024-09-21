@@ -11,8 +11,11 @@ caregivers = db["caregivers"]
 def save(caregiverID, state, geodata, client, timestamp, active, alert):
     for session in sessions.find():
         if session.get('caregiverID', "") == caregiverID and session.get('active', False):
-            sessions.update_one({'_ID': session.get("_ID")}, {'$set': {'caregiverID': caregiverID, 'state': state, 'geodata': geodata, 'client': client, 'timestamp': timestamp, "active": active, "alert": alert}})
+            print("UPDATING")
+            sessions.update_one({'_id': session.get("_id")}, {'$set': {'caregiverID': caregiverID, 'state': state, 'geodata': geodata, 'client': client, 'timestamp': timestamp, "active": active, "alert": alert}})
+            print("what happened")
             return
+        
     sessions.insert_one({'caregiverID': caregiverID, 'state': state, 'geodata': geodata, 'client': client, 'timestamp': timestamp, "active": active, "alert": alert})
 
 #returns all active users and all active users that are alerting
@@ -26,8 +29,8 @@ def get():
             caregiverDict = caregivers.find_one({'caregiverID': session['caregiverID']})
             if caregiverDict:
                 activeUsers[-1] = activeUsers[-1] | caregiverDict
-            else:
-                print(f"Caregiver not found {session['caregiverID']}")
+            # else:
+                # print(f"Caregiver not found {session['caregiverID']}")
             
             del activeUsers[-1]["_id"]
             if session.get('alert', False):
@@ -60,7 +63,7 @@ def getByCaregiverID(caregiverID):
 def remove(caregiverID):
     for session in sessions.find():
         if session.get('caregiverID', "") == caregiverID and session.get('active', False):
-            sessions.update_one({'_ID': session.get("_ID")}, {'$set': {'active': False}})
+            sessions.update_one({'_id': session.get("_id")}, {'$set': {'active': False}})
             return {"status": "Caregiver removed"}
     return {"status": "Caregiver not found"}
 
@@ -69,15 +72,10 @@ def alert(caregiverID):
     session = sessions.find_one({'caregiverID': caregiverID})
     if session and session.get('active', False):
         alert_value = not session.get('alert', False)
-        sessions.update_one({'_ID': session.get("_ID")}, {'$set': {'alert': alert_value}})
+        sessions.update_one({'_id': session.get("_id")}, {'$set': {'alert': alert_value}})
         return {"success": "Alert toggled successfully"}
     else:
         return {"error": "Caregiver not found"}
-
-
-
-
-print(get())
 
 
 
