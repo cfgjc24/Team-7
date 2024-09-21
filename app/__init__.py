@@ -1,7 +1,14 @@
+import os
 from flask import Flask, request, jsonify
+from . import db
+from . import oauth
 from .mongo import save
+# For development.
+os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 
 app = Flask(__name__, static_url_path="", static_folder="../build")
+app.secret_key = os.urandom(24)
+app.register_blueprint(oauth.blueprint)
 
 @app.route("/clockIn", methods=['POST'])
 def clockIn():
