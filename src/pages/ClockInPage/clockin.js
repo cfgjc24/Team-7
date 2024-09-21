@@ -15,8 +15,8 @@ import {
 
 // ClockInOut Component
 const ClockInOut = ({ emailId }) => {
-  const [status, setStatus] = useState('Not clocked in');
-  const [locationString, setLocationString] = useState('');
+  const [status, setStatus] = useState("Not clocked in");
+  const [locationString, setLocationString] = useState("");
   const [emergencyActive, setEmergencyActive] = useState(false);
   const [name, setName] = useState("");
   const [selectState, setSelectState] = useState("");
@@ -46,19 +46,18 @@ const ClockInOut = ({ emailId }) => {
   const handleEmergencyToggle = (event) => {
     const isActive = event.target.checked;
     setEmergencyActive(isActive);
-    alert(`Emergency status: ${isActive ? 'Emergency' : 'Non-Emergency'}`);
-    
-    fetch('/api/changeAlert', {
-      method: 'PUT',
+    alert(`Emergency status: ${isActive ? "Emergency" : "Non-Emergency"}`);
+
+    fetch("/api/changeAlert", {
+      method: "PUT",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({ caregiverid: emailId }) // Include caregiverid in the body
+      body: JSON.stringify({ caregiverid: emailId }), // Include caregiverid in the body
     })
-    .then(response => response.text()) // Assuming the response is just a text message
-    .then(data => console.log(data))
-    .catch(error => console.error('Error:', error));
-  };
+      .then((response) => response.text()) // Assuming the response is just a text message
+      .then((data) => console.log(data))
+      .catch((error) => console.error("Error:", error));
   };
 
   // Get the current time
@@ -82,12 +81,10 @@ const ClockInOut = ({ emailId }) => {
       alert(`Clocked In: ${JSON.stringify(info)}`);
       setStatus(`Clocked in at ${time}`);
 
-
-      
-      fetch('/api/clockIn', {
-        method: 'POST',
+      fetch("/api/clockIn", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           caregiverID: emailId,
@@ -95,12 +92,12 @@ const ClockInOut = ({ emailId }) => {
           geodata: locationString, // Use the actual locationString
           client: name,
           timestamp: time,
-          active: true // Active when clocking in
-        })
+          active: true, // Active when clocking in
+        }),
       })
-      .then(response => response.json())
-      .then(data => console.log(data))
-      .catch(error => console.error('Error:', error));
+        .then((response) => response.json())
+        .then((data) => console.log(data))
+        .catch((error) => console.error("Error:", error));
     });
   };
 
@@ -131,17 +128,16 @@ const ClockInOut = ({ emailId }) => {
     .catch(error => console.error('Error:', error));
     */
     fetch(`127.0.0.1:8080/clockOut?caregiverid=${emailId}`, {
-      method: 'PUT',
+      method: "PUT",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({ caregiverid: emailId }) // Include caregiverid in the body
+      body: JSON.stringify({ caregiverid: emailId }), // Include caregiverid in the body
     })
-    .then(response => response.text()) // Assuming the response is just a text message
-    .then(data => console.log(data))
-    .catch(error => console.error('Error:', error));
-
-
+      .then((response) => response.text()) // Assuming the response is just a text message
+      .then((data) => console.log(data))
+      .catch((error) => console.error("Error:", error));
+  };
 
   return (
     <Container maxWidth="sm">
@@ -231,7 +227,7 @@ const ClockInOut = ({ emailId }) => {
       </Box>
     </Container>
   );
-};  
+};
 
 // BasicSelect Component
 const BasicSelect = ({ setSelectState }) => {
