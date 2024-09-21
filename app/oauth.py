@@ -62,7 +62,9 @@ def callback():
 
       session["google_id"] = id_info.get("sub")
       session["email"] = id_info.get("email")
-    except Exception:
+      return redirect("http://localhost:3000")
+    except Exception as err:
+        print("bruh", err)
         return False
     
 @blueprint.route("/logout")
