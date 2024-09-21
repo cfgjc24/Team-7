@@ -25,6 +25,19 @@ def get():
             
     return res
 
+def getByCaregiverID(caregiverID):
+    res = [sessions.find_one({'caregiverID': caregiverID})]
+    if not res:
+        return {"error": "Caregiver not found"}
+    if not res.get('active', False):
+        return {"error": "Caregiver not active"}
+    
+    caregiverDict = caregivers.find_one({'caregiverID': caregiverID})
+    if caregiverDict:
+        res[0] = res[0] | caregiverDict
+    return res 
+    
+    
 #doesnt actually remove. just inactivates a certain field
 def remove(caregiverID):
     result = sessions.update_one({'caregiverID': caregiverID}, {'$set': {'active': False}})
