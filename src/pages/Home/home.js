@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Button, Container, Typography, Box } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../..";
 
 const HomePage = () => {
+  const user = useContext(AuthContext);
+
   const navigate = useNavigate();
   return (
     <Container maxWidth="sm">
@@ -14,19 +17,10 @@ const HomePage = () => {
           src="lodestarlogo.png"
           style={{ width: "500px", height: "auto" }}
         />
+
         <Typography variant="body1" gutterBottom>
-          Sign In Below
+          Hello {user.name}!
         </Typography>
-        {/* EDIT for Sign In Button  */}
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => {
-            window.location.href = "http://localhost:5000/login";
-          }}
-        >
-          Sign In Page
-        </Button>
 
         <Typography variant="body1" gutterBottom>
           Clock In Below

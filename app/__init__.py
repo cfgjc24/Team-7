@@ -25,6 +25,7 @@ def clockIn():
 @oauth.needs_login
 def getActive():
     res = get()[0]
+    print(res)
     return res
 
 #Call this endpoint with this example /clockOut?caregiverid={id}
@@ -53,12 +54,21 @@ def changeAlert():
 
     return f'changed alert for {queryCg}'
 
-@app.route("/bruh", methods=['GET'])
-@oauth.needs_login
-def bruh():
-    from flask import session
-    print(session['email'])
-    return 'bruh'
+@app.route("/isAuthenticated", methods=['GET'])
+def isAuthenticated():
+    # this doesn't actually verify the token
+    is_authenticated = "google_id" in session
+    if not is_authenticated:
+        return jsonify({'is_authenticated': False})
+
+    user_info = {
+        'google_id': session['google_id'],
+        'email': session['email'],
+        'name': session['name'],
+        'is_authenticated': True
+    }
+
+    return jsonify(user_info)
 
     
 

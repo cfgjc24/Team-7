@@ -38,6 +38,7 @@ def needs_login(func):
             return redirect("/login")
         else:
             return func()
+    decorator.__name__ = func.__name__
     return decorator
 
 @blueprint.route("/login")
