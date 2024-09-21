@@ -6,6 +6,7 @@ import google.auth.transport.requests
 from flask import session, redirect, request, Blueprint, abort
 from pip._vendor import cachecontrol
 import requests
+from app.db import db
 
 load_dotenv()
 GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
@@ -32,8 +33,9 @@ blueprint = Blueprint("home", __name__)
 # decorator
 def needs_login(func):
     def decorator(*args, **kwargs):
+        # this does no actual verification of the token
         if "google_id" not in session:
-            return abort(401)
+            return redirect("/login")
         else:
             return func()
     return decorator
@@ -61,13 +63,20 @@ def callback():
       )
 
       session["google_id"] = id_info.get("sub")
+      session["name"] = id_info.get("name")
       session["email"] = id_info.get("email")
+
+      register_new_user(session["name"], session["email"])
+
       return redirect("http://localhost:3000")
     except Exception as err:
-        print("bruh", err)
         return False
-    
+
 @blueprint.route("/logout")
 def logout():
     session.clear()
     return redirect("/")
+
+def register_new_user(name, email):
+    if db["caregivers"].find_one({"caregiverID": email}) is None:
+        db["caregivers"].insert_one({"name": name, "caregiverID": email})

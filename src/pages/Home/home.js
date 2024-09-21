@@ -21,7 +21,9 @@ const HomePage = () => {
         <Button
           variant="contained"
           color="primary"
-          onClick={() => navigate("/signin")}
+          onClick={() => {
+            window.location.href = "http://localhost:5000/login";
+          }}
         >
           Sign In Page
         </Button>
