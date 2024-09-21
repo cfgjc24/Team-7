@@ -21,7 +21,10 @@ sessions = db["sessions"]
 
 
 
-def save(caregiverID, state, geodata, client, timestamp):
+def save(caregiverID, state, geodata, client, timestamp, active):
     sessions.insert_one({'caregiverID': caregiverID, 'state': state, 'geodata': geodata, 'client': client, 'timestamp': timestamp})
 
-save("123", "test", "test", "test", "test")
+def get():
+    for session in sessions.find():
+        if session.get('state', "") == 'active':
+            return session
