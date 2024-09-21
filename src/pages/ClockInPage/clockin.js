@@ -4,6 +4,26 @@ import { Button, Container, Typography, Box, Select, InputLabel, MenuItem, FormC
 // ClockInOut Component
 const ClockInOut = () => {
   const [status, setStatus] = useState('Not clocked in');
+  const [location, setLocation] = useState(null);
+
+  // Get the user's location
+  const getLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setLocation({
+            latitude, longitude});
+          console.log(position.coords.latitude, position.coords.longitude);
+        },
+        (error) => {
+          console.error('Error getting user location:', error);
+        }
+      );
+    } else {
+      console.error('Geolocation is not supported by this browser.');
+    }
+  };
 
   // Get the current time
   const getCurrTime = () => {
@@ -20,6 +40,7 @@ const ClockInOut = () => {
   // Handle Clock Out button click
   const handleClockOut = () => {
     const time = getCurrTime();
+    getLocation();
     setStatus(`Clocked out at ${time}`);
   };
 
