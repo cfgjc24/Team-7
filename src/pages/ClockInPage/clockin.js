@@ -1,20 +1,23 @@
 import React, { useState } from 'react';
-import { Button, Container, Typography, Box, Select, InputLabel, MenuItem, FormControl } from '@mui/material';
+import { Button, Container, Typography, Box, Select, InputLabel, MenuItem, FormControl, TextField } from '@mui/material';
 
 // ClockInOut Component
 const ClockInOut = () => {
   const [status, setStatus] = useState('Not clocked in');
   const [location, setLocation] = useState(null);
+  const [locationString, setLocationString] = useState('');
 
   // Get the user's location
-  const getLocation = () => {
+  const getLocation = (callback) => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
-          setLocation({
-            latitude, longitude});
-          console.log(position.coords.latitude, position.coords.longitude);
+          const locationStr = `Latitude: ${latitude}, Longitude: ${longitude}`;
+          setLocation({ latitude, longitude });
+          setLocationString(locationStr);
+          console.log(locationStr); 
+          if (callback) callback(locationStr); 
         },
         (error) => {
           console.error('Error getting user location:', error);
@@ -23,6 +26,15 @@ const ClockInOut = () => {
     } else {
       console.error('Geolocation is not supported by this browser.');
     }
+  };
+  
+
+  //Handle Emergency Buttion
+  const handleEmergency =() => {
+    getLocation((locationStr) =>{
+        alert(`Emergency button clicked. Location: ${locationStr}`);
+        setStatus(`Emergency button clicked at ${getCurrTime()}`);
+    });
   };
 
   // Get the current time
@@ -52,6 +64,9 @@ const ClockInOut = () => {
         </Typography>
 
         <Box mt={5} mb={5} display="flex" flexDirection="column" alignItems="center">
+        <Typography variant="h6">
+          Status: {status}
+        </Typography>
           <Button 
             variant="contained" 
             color="primary" 
@@ -75,11 +90,13 @@ const ClockInOut = () => {
             Click to clock out of shift 
           </Typography>
         </Box>
+        </Box>
 
+        
         <Box mt={5} mb={5} display="flex" flexDirection="column" alignItems="center">
         <Button 
         variant="contained" 
-        onClick={handleClockOut}
+        onClick={handleEmergency}
         style={{ 
             backgroundColor: 'red',  
             color: 'white',          
@@ -92,16 +109,30 @@ EMERGENCY
             ONLY IN CASE OF EMERGENCY 
           </Typography>
         </Box>
-          <Typography variant="h6">
-          Status: {status}
-        </Typography>
         <Typography>
-            Enter your shift details below
+            Enter your client name below
+          </Typography>
+        <BasicTextFields /> 
+        <Box mt={0} mb={0} display="flex" flexDirection="column" alignItems="center">
+        <Button 
+        variant="contained" 
+        onClick={handleClockOut}
+        style={{ 
+            backgroundColor: 'green',  
+            color: 'white',           
+            marginLeft: '300px'
+  }}
+>
+Submit
+</Button>
+          
+        <Typography align ="left">
+            Enter your shift status below
           </Typography>
 
     
       <BasicSelect />  
-      <Box mt={5} mb={5} display="flex" flexDirection="column" alignItems="center">
+      <Box mt={1} mb={0} display="flex" flexDirection="column" alignItems="center">
         <Button 
         variant="contained" 
         onClick={handleClockOut}
@@ -145,7 +176,24 @@ const BasicSelect = () => {
     </FormControl>
   );
 };
+const BasicTextFields = () => {
+    return (
+      <Box
+        component="form"
+        sx={{ '& > :not(style)': { m: 1, width: '63ch' } }}
+        noValidate
+        autoComplete="off"
+      >
+        <TextField id="outlined-basic" label="Outlined" variant="outlined" />
+        
+      </Box>
+    );
+  }
 
 export default ClockInOut;
 
 export { BasicSelect };
+
+export {BasicTextFields}
+
+//name,location, client id, current state, timestamp, active, emergency
