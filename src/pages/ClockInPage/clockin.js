@@ -20,7 +20,8 @@ const getCurrTime = () => {
 };
 
 // ClockInOut Component
-const ClockInOut = ({ emailId }) => {
+const ClockInOut = ({ }) => {
+  const [emailId, setEmailId] = useState("ninjatoob@gmail.com")
   const [status, setStatus] = useState("Not clocked in");
   const [location, setLocation] = useState(null);
   const [locationString, setLocationString] = useState("");
@@ -68,21 +69,14 @@ const ClockInOut = ({ emailId }) => {
   const handleEmergencyToggle = (event) => {
     const isActive = event.target.checked;
     setEmergencyActive(isActive);
+    fetch(`http://127.0.0.1:5000/changeAlert?caregiverid=${emailId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
     alert(`Emergency status: ${isActive ? "Emergency" : "Non-Emergency"}`);
   };
-
-  // Handle Clock In button click
-  function ClockInComponent() {
-    const [userData, setUserData] = useState({
-      caregiverID: emailId,
-      state: status,
-      geodata: locationString,
-      client: name,
-      timestamp: getCurrTime(),
-      active: true,
-      alert: emergencyActive
-    });
-  }
 
 
   const handleClockIn = () => {
@@ -99,16 +93,13 @@ const ClockInOut = ({ emailId }) => {
       setUserData(updatedData);
       setStatus(`Clocked in at ${time}`);
       alert(`Clocked In: ${JSON.stringify(updatedData)}`);
-      console.log(emailId)
-      console.log(userData)
-      console.log(updatedData)
       fetch(`http://127.0.0.1:5000/clockIn`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          caregiverID: 'jham',
+          caregiverID: emailId,
           state: status,
           geodata: locationString,
           client: name,
@@ -140,6 +131,12 @@ const ClockInOut = ({ emailId }) => {
       active: false, // Inactive when clocking out
     };
     setSubmittedInfo(info);
+    fetch(`http://127.0.0.1:5000/clockOut?caregiverid=${emailId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
     alert(`Clocked Out: ${JSON.stringify(info)}`);
     setStatus(`Clocked out at ${time}`);
   };
