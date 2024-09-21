@@ -29,8 +29,11 @@ def get():
             else:
                 print(f"Caregiver not found {session['caregiverID']}")
             
+            del activeUsers[-1]["_id"]
             if session.get('alert', False):
                 alertedUsers.append(activeUsers[-1])
+
+            
             
     return activeUsers, alertedUsers
 
