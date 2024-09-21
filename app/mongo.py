@@ -66,15 +66,17 @@ def remove(caregiverID):
 
 #Toggle the alert field for the caregiverID
 def alert(caregiverID):
-    res = getByCaregiverID(caregiverID)
-    if "error" in res:
-        return res
-    sessions.update_one({'caregiverID': caregiverID}, {'$set': {'alert': False}})
-    return res
+    session = sessions.find_one({'caregiverID': caregiverID})
+    if session and session.get('active', False):
+        alert_value = not session.get('alert', False)
+        sessions.update_one({'_ID': session.get("_ID")}, {'$set': {'alert': alert_value}})
+        return {"success": "Alert toggled successfully"}
+    else:
+        return {"error": "Caregiver not found"}
 
 
 
-print(remove('123'))
+
 print(get())
 
 
