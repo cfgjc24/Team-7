@@ -48,7 +48,7 @@ const AlertLayout = ({ alertList }) => {
           {alertList.map((alert, index) => (
             <React.Fragment key={index}>
               <ListItem button onClick={() => onAlertSelect(alert)}>
-                <ListItemText primary={"Crisis: " + alert.caregivername} />
+                <ListItemText primary={"Crisis: " + alert.caregiverID} />
               </ListItem>
               <Divider component="li" />
             </React.Fragment>
