@@ -108,7 +108,7 @@ const ClockInOut = ({ emailId }) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          caregiverID: emailId,
+          caregiverID: 'jham',
           state: status,
           geodata: locationString,
           client: name,
