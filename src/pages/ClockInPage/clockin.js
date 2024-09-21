@@ -63,7 +63,23 @@ const ClockInOut = ({ emailId }) => {
       alert(`Clocked In: ${JSON.stringify(info)}`);
       setStatus(`Clocked in at ${time}`);
     });
-  };
+}
+    
+//     fetch('api/clockIn', {
+//         method: 'POST',
+//         headers: {
+//           'Content-Type': 'application/json'
+//     },
+//         body: JSON.stringify({
+//           data: caregiverID, name, location, , currentState, timestamp, active
+//         })
+//       })
+//       .then(response => response.json())
+//       .then(data => console.log(data))
+//       .catch(error => console.error('Error:', error));
+      
+//   };
+  
 
   // Handle Clock Out button click
   const handleClockOut = () => {
@@ -206,3 +222,4 @@ const BasicTextFields = ({ setName }) => {
 export default ClockInOut;
 export { BasicSelect };
 export { BasicTextFields };
+
