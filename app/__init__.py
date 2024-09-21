@@ -48,7 +48,7 @@ def clockOut():
 @app.route("/queryCareGiver", methods=['GET'])
 @oauth.needs_login
 def getCareGiver():
-    careGiverID = session['email']
+    careGiverID = request.args.get("caregiverid") | session['email']
     queryCg = careGiverID
     return getByCaregiverID(queryCg)
 

@@ -17,36 +17,8 @@ const Provider = ({
   selectedProvider,
   setSelectedProvider,
 }) => {
-  const [searchID, setSearchID] = useState("");
+  const [query, setQuery] = useState("");
 
-  const handleSearch = () => {
-    console.log(searchID);
-    fetch(`/queryCareGiver?caregiverid=${searchID}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("HELLO", data);
-        if (data && data.geodata) {
-          // Splice and convert geodata string into latitude and longitude
-          const [lat, lon] = data.geodata.split(",").map(parseFloat);
-          data.geodata = [lat, lon]; // Set the converted geodata array
-          setSelectedProvider(data); // Update the selected provider with the new data
-        } else {
-          console.log(data);
-          setSelectedProvider(null); // Handle no data found
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching provider:", error);
-        setSelectedProvider([]); // In case of error, show an empty list
-      });
-
-    console.log(selectedProvider);
-  };
   return (
     <Container sx={{ marginTop: "20px" }}>
       <h2>Find Provider</h2>
@@ -54,9 +26,9 @@ const Provider = ({
         id="search-provider"
         label="Search by ID"
         variant="outlined"
-        onChange={(e) => setSearchID(e.target.value)}
+        onChange={(e) => setQuery(e.target.value)}
       />
-      <IconButton onClick={handleSearch}>
+      <IconButton>
         <ManageSearchIcon
           style={{
             fontSize: 50,
@@ -100,14 +72,16 @@ const Provider = ({
         </div>
       ) : (
         <List>
-          {providers.map((provider) => (
-            <React.Fragment key={provider.caregiverID}>
-              <ListItem button onClick={() => onProviderSelect(provider)}>
-                <ListItemText primary={provider.caregiverID} />
-              </ListItem>
-              <Divider component="li" />
-            </React.Fragment>
-          ))}
+          {providers
+            .filter((x) => x.caregiverID.includes(query))
+            .map((provider) => (
+              <React.Fragment key={provider.caregiverID}>
+                <ListItem button onClick={() => onProviderSelect(provider)}>
+                  <ListItemText primary={provider.caregiverID} />
+                </ListItem>
+                <Divider component="li" />
+              </React.Fragment>
+            ))}
         </List>
       )}
     </Container>
