@@ -27,10 +27,10 @@ const ClockInOut = () => {
     <Container maxWidth="sm">
       <Box textAlign="center" mt={5}>
         <Typography variant="h4" gutterBottom>
-          Clock In / Clock Out
+          TimeSheet 
         </Typography>
         
-        <Box mt={3} mb={3}>
+        <Box mt={5} mb={10} display="flex" flexDirection="column" alignItems="center">
           <Button 
             variant="contained" 
             color="primary" 
@@ -39,14 +39,27 @@ const ClockInOut = () => {
           >
             Clock In
           </Button>
+          <Typography variant="h10" gutterBottom>
+          Click to clock in to shift 
+        </Typography>
+
+        <Typography>
+            Enter your shift details below
+        </Typography>
+
           
           <Button 
             variant="contained" 
             color="secondary" 
             onClick={handleClockOut}
+            style={{ marginRight: '10px' }}
+
           >
             Clock Out
           </Button>
+          <Typography variant="h10" gutterBottom>
+          Click to clock out of shift 
+        </Typography>
         </Box>
         
         <Typography variant="h6">
