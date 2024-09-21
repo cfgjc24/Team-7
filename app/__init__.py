@@ -12,9 +12,7 @@ def clockIn():
 
 @app.route("/getActive", methods=['GET'])
 def getActive():
-    data = get().get_json()
-
-    print(type(data))
-    print(type(jsonify(data)))
-    
-    return 'success'
+    res = get()[0]
+    res2 = ["fdhsfk", "sdahiflk"]
+    print(type(res)==type(res2))
+    return res2
