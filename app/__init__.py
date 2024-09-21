@@ -1,5 +1,6 @@
+import array
 from flask import Flask, request, jsonify
-from .mongo import save, get
+from .mongo import save, get, remove
 
 app = Flask(__name__, static_url_path="", static_folder="../build")
 
@@ -13,6 +14,8 @@ def clockIn():
 @app.route("/getActive", methods=['GET'])
 def getActive():
     res = get()[0]
-    res2 = ["fdhsfk", "sdahiflk"]
-    print(type(res)==type(res2))
-    return res2
+    return res
+
+@app.route("/clockOut?", methods=['Put'])
+def clockOut():
+    remove()
