@@ -75,7 +75,7 @@ const Supervisor = () => {
           selectedProvider={selectedProvider}
         />
       </Grid>
-      <Grid item xs style={{ flexGrow: 0.5 }}>
+      <Grid item xs style={{ flexGrow: 0.2 }}>
         <AlertLayout alertList={providerList} />
       </Grid>
     </Grid>
