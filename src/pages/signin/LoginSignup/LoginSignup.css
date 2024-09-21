@@ -42,14 +42,14 @@
 .input input {
     height: 50px;
     width: 400px;
-    background: #f0f0f0; /* Very faint grey background */
+    background: #f0f0f0; 
     border: none;
     outline: none;
-    color: #797979; /* Existing text color */
+    color: #797979; 
     font-size: 19px;
 }
 .forgot-password{
-    padding-left: 62px;
+    padding-left: 205px;
     margin-top: 27px;
     color: #797979b2;
     font-size: 18px;
@@ -57,6 +57,8 @@
 .forgot-password span{
     color: #5b91f5;
     cursor: pointer;
+    justify-content: center;
+   
 }
 
 .submit-container{
