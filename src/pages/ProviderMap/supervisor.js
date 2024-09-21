@@ -26,18 +26,31 @@ const Supervisor = () => {
         state: "At home",
         client: "Client B",
         active: true,
-        geodata: [40.7128, -74.006],
+        geodata: "40.7128, -74.006",
         alert: false,
       },
     ]; */
-    fetch("/queryCareGiver", {
+    fetch("/getActive", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
     })
       .then((response) => response.json())
-      .then((data) => setProviderList(data))
+      .then((data) => {
+        const updatedProviders = data.map((position) => {
+          if (typeof position.geodata === "string") {
+            const [lat, lon] = position.geodata.split(",").map(parseFloat);
+            return {
+              ...position,
+              geodata: [lat, lon],
+            };
+          }
+          return position;
+        });
+
+        setProviderList(updatedProviders);
+      })
       .catch((error) => console.error("ERROR:", error));
   }, []);
 

@@ -1,8 +1,10 @@
 import React, { useState, useRef } from 'react';
 import './LoginSignup.css';
 import theLogo from './the-logo.png';
+import { Link, useNavigate } from "react-router-dom";
 
 export default function LoginSignup() {
+    const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const emailRef = useRef(null); 
