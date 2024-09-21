@@ -11,5 +11,4 @@ os.environ["PYTHONWARNINGS"] = "ignore:Unverified HTTPS request"
 
 mongo = MongoClient(os.getenv("DB_CONNECTION_STRING"), tlsCAFile=certifi.where())
 
-
 db = mongo['dev']
