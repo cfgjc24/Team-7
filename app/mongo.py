@@ -53,6 +53,14 @@ def getByCaregiverID(caregiverID):
 def remove(caregiverID):
     result = sessions.update_one({'caregiverID': caregiverID}, {'$set': {'active': False}})
 
+#Toggle the alert field for the caregiverID
+def alert(caregiverID):
+    res = getByCaregiverID(caregiverID)
+    if "error" in res:
+        return res
+    sessions.update_one({'caregiverID': caregiverID}, {'$set': {'alert': False}})
+    return res
+
 
 
 
