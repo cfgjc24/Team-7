@@ -22,18 +22,31 @@ const ProviderMap = ({ positions, onMarkerClick }) => {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       {positions.map((position, index) => (
-        <Circle
-          center={position.geodata}
-          color="red"
-          fillColor="#f03"
-          fillOpacity={0.5}
-          radius={500}
-          eventHandlers={{
-            click: () => {
-              onMarkerClick(position);
-            },
-          }}
-        />
+        <React.Fragment key={index}>
+          {position.alert ? (
+            <Circle
+              center={position.geodata}
+              color="red"
+              fillColor="#f03"
+              fillOpacity={0.5}
+              radius={500}
+              eventHandlers={{
+                click: () => {
+                  onMarkerClick(position);
+                },
+              }}
+            />
+          ) : (
+            <Marker
+              position={position.geodata}
+              eventHandlers={{
+                click: () => {
+                  onMarkerClick(position);
+                },
+              }}
+            ></Marker>
+          )}
+        </React.Fragment>
       ))}
     </MapContainer>
   );
