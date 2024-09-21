@@ -8,22 +8,30 @@ caregivers = db["caregivers"]
 
 
 
-def save(caregiverID, state, geodata, client, timestamp, active):
-    sessions.insert_one({'caregiverID': caregiverID, 'state': state, 'geodata': geodata, 'client': client, 'timestamp': timestamp, "active": active})
+def save(caregiverID, state, geodata, client, timestamp, active, alert):
+    for session in sessions.find():
+        if session.get('caregiverID', "") == caregiverID:
+            sessions.update_one({'caregiverID': caregiverID, 'state': state, 'geodata': geodata, 'client': client, 'timestamp': timestamp, "active": active, "alert": alert})
+            return
+    sessions.insert_one({'caregiverID': caregiverID, 'state': state, 'geodata': geodata, 'client': client, 'timestamp': timestamp, "active": active, "alert": alert})
 
 def get():
-    res = []
+    activeUsers = []
+    alertedUsers = []
     for session in sessions.find():
         if session.get('active', ""):
-            res.append(session)
+            activeUsers.append(session)
             
             caregiverDict = caregivers.find_one({'caregiverID': session['caregiverID']})
             if caregiverDict:
-                res[-1] = res[-1] | caregiverDict
+                activeUsers[-1] = activeUsers[-1] | caregiverDict
             else:
                 print(f"Caregiver not found {session['caregiverID']}")
             
-    return res
+            if session.get('alert', False):
+                alertedUsers.append(activeUsers[-1])
+            
+    return activeUsers, alertedUsers
 
 def getByCaregiverID(caregiverID):
     res = [sessions.find_one({'caregiverID': caregiverID})]
