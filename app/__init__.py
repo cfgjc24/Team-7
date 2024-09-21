@@ -27,7 +27,7 @@ def getActive():
 @app.route("/clockOut", methods=['PUT'])
 def clockOut():
     queryCg = request.args.get('caregiverid')
-    remove(queryCg)
+    #remove(queryCg)
 
     return f'removed {queryCg}'
 
