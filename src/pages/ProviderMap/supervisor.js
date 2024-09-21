@@ -8,7 +8,7 @@ const Supervisor = () => {
   const [selectedProvider, setSelectedProvider] = useState(null);
 
   useEffect(() => {
-    const providers = [
+    /* const providers = [
       {
         caregiverid: "1",
         caregivername: "John Pork",
@@ -29,9 +29,16 @@ const Supervisor = () => {
         geodata: [40.7128, -74.006],
         alert: false,
       },
-    ];
-
-    setProviderList(providers);
+    ]; */
+    fetch("/queryCareGiver", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => setProviderList(data))
+      .catch((error) => console.error("ERROR:", error));
   }, []);
 
   const handleProviderSelect = (provider) => {
