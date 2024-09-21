@@ -113,6 +113,8 @@ const ClockInOut = ({ emailId }) => {
 
   // Handle Clock Out button click
   const handleClockOut = () => {
+    setEmergencyActive(false); // Reset emergency status on clock out
+
     const time = getCurrTime();
     const info = {
       name,
