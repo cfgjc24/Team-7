@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { Button, Container, Typography, Box } from '@mui/material';
+import { Button, Container, Typography, Box, Select, InputLabel, MenuItem, FormControl } from '@mui/material';
 
+// ClockInOut Component
 const ClockInOut = () => {
-    console.log("heree")
   const [status, setStatus] = useState('Not clocked in');
 
-  //  get the current time
+  // Get the current time
   const getCurrTime = () => {
     const now = new Date();
     return now.toLocaleTimeString();
@@ -27,10 +27,10 @@ const ClockInOut = () => {
     <Container maxWidth="sm">
       <Box textAlign="center" mt={5}>
         <Typography variant="h4" gutterBottom>
-          TimeSheet 
+          TimeSheet
         </Typography>
-        
-        <Box mt={5} mb={10} display="flex" flexDirection="column" alignItems="center">
+
+        <Box mt={5} mb={5} display="flex" flexDirection="column" alignItems="center">
           <Button 
             variant="contained" 
             color="primary" 
@@ -40,34 +40,91 @@ const ClockInOut = () => {
             Clock In
           </Button>
           <Typography variant="h10" gutterBottom>
-          Click to clock in to shift 
-        </Typography>
-
-        <Typography>
-            Enter your shift details below
-        </Typography>
-
-          
+            Click to clock in to shift 
+          </Typography>
           <Button 
             variant="contained" 
             color="secondary" 
             onClick={handleClockOut}
             style={{ marginRight: '10px' }}
-
           >
             Clock Out
           </Button>
           <Typography variant="h10" gutterBottom>
-          Click to clock out of shift 
-        </Typography>
+            Click to clock out of shift 
+          </Typography>
         </Box>
-        
-        <Typography variant="h6">
+
+        <Box mt={5} mb={5} display="flex" flexDirection="column" alignItems="center">
+        <Button 
+        variant="contained" 
+        onClick={handleClockOut}
+        style={{ 
+            backgroundColor: 'red',  
+            color: 'white',          
+            marginRight: '10px'
+  }}
+>
+EMERGENCY
+</Button>
+          <Typography variant="h10" gutterBottom>
+            ONLY IN CASE OF EMERGENCY 
+          </Typography>
+        </Box>
+          <Typography variant="h6">
           Status: {status}
         </Typography>
+        <Typography>
+            Enter your shift details below
+          </Typography>
+
+    
+      <BasicSelect />  
+      <Box mt={5} mb={5} display="flex" flexDirection="column" alignItems="center">
+        <Button 
+        variant="contained" 
+        onClick={handleClockOut}
+        style={{ 
+            backgroundColor: 'green',  
+            color: 'white',           
+            marginLeft: '300px'
+  }}
+>
+Submit
+</Button>
+
+        </Box>
+          
+        
       </Box>
     </Container>
   );
 };
 
+// BasicSelect Component
+const BasicSelect = () => {
+  const [selectState, setSelectState] = useState('');
+
+  const handleChange = (event) => {
+    setSelectState(event.target.value);
+  };
+
+  return (
+    <FormControl fullWidth>
+      <InputLabel id="state-select-label">Current State</InputLabel>
+      <Select
+        labelId="state-select-label"
+        value={selectState}
+        onChange={handleChange}
+      >
+        <MenuItem value="Recreational External Activity">Recreational</MenuItem>
+        <MenuItem value="Leisure At Home Activity">Leisure</MenuItem>
+        <MenuItem value="Emotional Support">Emotional</MenuItem>
+      </Select>
+    </FormControl>
+  );
+};
+
 export default ClockInOut;
+
+export { BasicSelect };
