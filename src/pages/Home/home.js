@@ -17,7 +17,7 @@ const HomePage = () => {
         Sign In Below
         </Typography>
         {/* EDIT for Sign In Button  */}
-        <Button variant="contained" color="primary" onClick={() => navigate("/clock-in")}>
+        <Button variant="contained" color="primary" onClick={() => navigate("/signin")}>
           Sign In Page
         </Button>
         
@@ -34,7 +34,7 @@ const HomePage = () => {
         Supervisor Dashboard
         </Typography>
      {/* EDIT for Supervisor Dashboard */}
-        <Button variant="contained" color="primary" onClick={() => navigate("/clock-in")}>
+        <Button variant="contained" color="primary" onClick={() => navigate("/ProviderMap")}>
           Supervisor Dashboard
         </Button>
         
