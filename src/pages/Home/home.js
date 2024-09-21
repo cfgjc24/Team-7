@@ -18,38 +18,15 @@ const HomePage = () => {
           Sign In Below
         </Typography>
         {/* EDIT for Sign In Button  */}
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => {
-            window.location.href = "http://localhost:5000/login";
-          }}
-        >
+        <Button variant="contained" color="primary" onClick={() => navigate("/signin")}>
           Sign In Page
         </Button>
 
         <Typography variant="body1" gutterBottom>
           Clock In Below
         </Typography>
-
-        {/* Use Link to refer to the clock page */}
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => navigate("/clock-in")}
-        >
-          Go to Clock In/Out Page
-        </Button>
-
-        <Typography variant="body1" gutterBottom>
-          Supervisor Dashboard
-        </Typography>
-        {/* EDIT for Supervisor Dashboard */}
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => navigate("/clock-in")}
-        >
+     {/* EDIT for Supervisor Dashboard */}
+        <Button variant="contained" color="primary" onClick={() => navigate("/ProviderMap")}>
           Supervisor Dashboard
         </Button>
       </Box>
