@@ -53,6 +53,7 @@ const ClockInOut = ({ emailId }) => {
       headers: {
         "Content-Type": "application/json",
       },
+      mode: "no-cors",
       body: JSON.stringify({ caregiverid: emailId }), // Include caregiverid in the body
     })
       .then((response) => response.text()) // Assuming the response is just a text message
@@ -86,6 +87,7 @@ const ClockInOut = ({ emailId }) => {
         headers: {
           "Content-Type": "application/json",
         },
+        mode: "no-cors",
         body: JSON.stringify({
           caregiverID: emailId,
           state: selectState,
@@ -132,6 +134,7 @@ const ClockInOut = ({ emailId }) => {
       headers: {
         "Content-Type": "application/json",
       },
+      mode: "no-cors",
       body: JSON.stringify({ caregiverid: emailId }), // Include caregiverid in the body
     })
       .then((response) => response.text()) // Assuming the response is just a text message
