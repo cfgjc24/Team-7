@@ -12,9 +12,12 @@ import {
   Switch,
   FormControlLabel,
 } from "@mui/material";
+import { useNavigate } from "react-router";
 
 // ClockInOut Component
 const ClockInOut = ({ emailId }) => {
+  const navigate = useNavigate();
+
   const [status, setStatus] = useState("Not clocked in");
   const [locationString, setLocationString] = useState("");
   const [emergencyActive, setEmergencyActive] = useState(false);
@@ -48,13 +51,11 @@ const ClockInOut = ({ emailId }) => {
     setEmergencyActive(isActive);
     alert(`Emergency status: ${isActive ? "Emergency" : "Non-Emergency"}`);
 
-    fetch("/api/changeAlert", {
-      method: "PUT",
+    fetch(`/changeAlert`, {
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
-      mode: "no-cors",
-      body: JSON.stringify({ caregiverid: emailId }), // Include caregiverid in the body
     })
       .then((response) => response.text()) // Assuming the response is just a text message
       .then((data) => console.log(data))
@@ -82,24 +83,31 @@ const ClockInOut = ({ emailId }) => {
       alert(`Clocked In: ${JSON.stringify(info)}`);
       setStatus(`Clocked in at ${time}`);
 
-      fetch("/api/clockIn", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        mode: "no-cors",
-        body: JSON.stringify({
-          caregiverID: emailId,
-          state: selectState,
-          geodata: locationString, // Use the actual locationString
-          client: name,
-          timestamp: time,
-          active: true, // Active when clocking in
-        }),
-      })
-        .then((response) => response.json())
-        .then((data) => console.log(data))
-        .catch((error) => console.error("Error:", error));
+      console.log("locationstring", locationString);
+
+      getLocation((locationString) => {
+        fetch(
+          `/clockIn?state=${selectState}&geodata=${locationString}&client=${name}&timestamp=${time}&active=true&alert=false`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            if (data && data.geodata) {
+              // Splice and convert geodata string into latitude and longitude
+              const [lat, lon] = data.geodata.split(",").map(parseFloat);
+              data.geodata = [lat, lon]; // Set the converted geodata array
+            } else {
+            }
+          })
+          .catch((error) => {
+            console.error("Error fetching provider:", error);
+          });
+      });
     });
   };
 
@@ -129,13 +137,11 @@ const ClockInOut = ({ emailId }) => {
     .then(data => console.log(data))
     .catch(error => console.error('Error:', error));
     */
-    fetch(`127.0.0.1:8080/clockOut?caregiverid=${emailId}`, {
-      method: "PUT",
+    fetch(`/clockOut`, {
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
-      mode: "no-cors",
-      body: JSON.stringify({ caregiverid: emailId }), // Include caregiverid in the body
     })
       .then((response) => response.text()) // Assuming the response is just a text message
       .then((data) => console.log(data))
@@ -217,16 +223,28 @@ const ClockInOut = ({ emailId }) => {
         flexDirection="column"
         alignItems="center"
       >
-        <Button
-          variant="contained"
-          onClick={handleClockIn} // Submit button calls clock in for demonstration
-          style={{
-            backgroundColor: "green",
-            color: "white",
-          }}
-        >
-          Submit
-        </Button>
+        <div style={{ flex: "display", gap: "1rem" }}>
+          <Button
+            variant="contained"
+            onClick={() => navigate("/")} // Submit button calls clock in for demonstration
+            style={{
+              backgroundColor: "blue",
+              color: "white",
+            }}
+          >
+            Back
+          </Button>
+          <Button
+            variant="contained"
+            onClick={handleClockIn} // Submit button calls clock in for demonstration
+            style={{
+              backgroundColor: "green",
+              color: "white",
+            }}
+          >
+            Submit
+          </Button>
+        </div>
       </Box>
     </Container>
   );

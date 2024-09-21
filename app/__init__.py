@@ -12,12 +12,20 @@ app = Flask(__name__, static_url_path="", static_folder="../build")
 app.secret_key = os.urandom(24)
 app.register_blueprint(oauth.blueprint)
 
-@app.route("/clockIn", methods=['POST'])
+
+@app.route("/clockIn", methods=['GET'])
 @oauth.needs_login
 def clockIn():
-    data = request.get_json()
+    state = request.args.get('state')
+    geodata = request.args.get('geodata')
+    client = request.args.get('client')
+    timestamp = request.args.get('timestamp')
+    active = bool(request.args.get('active'))
+    alert = bool(request.args.get('alert'))
+
+    # data = request.get_json()
     careGiverID = session['email']
-    save(careGiverID, data['state'], data['geodata'], data['client'], data['timestamp'], data['active'], data["alert"])
+    save(careGiverID, state, geodata, client, timestamp, active, False)
     return jsonify({'message': 'Clocked In'})
 
 
@@ -29,14 +37,13 @@ def getActive():
     return res
 
 #Call this endpoint with this example /clockOut?caregiverid={id}
-@app.route("/clockOut", methods=['PUT'])
+@app.route("/clockOut", methods=['GET'])
 @oauth.needs_login
 def clockOut():
     careGiverID = session['email']
     queryCg = careGiverID
     remove(queryCg)
-
-    return f'removed {queryCg}'
+    return jsonify({'message': 'Clocked Out'})
 
 @app.route("/queryCareGiver", methods=['GET'])
 @oauth.needs_login
@@ -45,7 +52,7 @@ def getCareGiver():
     queryCg = careGiverID
     return getByCaregiverID(queryCg)
 
-@app.route("/changeAlert", methods=['PUT'])
+@app.route("/changeAlert", methods=['GET'])
 @oauth.needs_login
 def changeAlert():
     careGiverID = session['email']
