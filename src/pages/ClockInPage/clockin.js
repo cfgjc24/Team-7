@@ -13,6 +13,12 @@ import {
   FormControlLabel,
 } from "@mui/material";
 
+// Get the current time
+const getCurrTime = () => {
+  const now = new Date();
+  return now.toLocaleTimeString();
+};
+
 // ClockInOut Component
 const ClockInOut = ({ emailId }) => {
   const [status, setStatus] = useState("Not clocked in");
@@ -21,6 +27,16 @@ const ClockInOut = ({ emailId }) => {
   const [emergencyActive, setEmergencyActive] = useState(false);
   const [name, setName] = useState("");
   const [selectState, setSelectState] = useState("");
+
+  const [userData, setUserData] = useState({
+    caregiverID: emailId,
+    state: status,
+    geodata: locationString,
+    client: name,
+    timestamp: getCurrTime(),
+    active: true,
+    alert: emergencyActive,
+  });
 
   // State to store submitted information
   const [submittedInfo, setSubmittedInfo] = useState({});
@@ -46,6 +62,8 @@ const ClockInOut = ({ emailId }) => {
     }
   };
 
+
+
   // Handle Emergency Toggle
   const handleEmergencyToggle = (event) => {
     const isActive = event.target.checked;
@@ -53,44 +71,62 @@ const ClockInOut = ({ emailId }) => {
     alert(`Emergency status: ${isActive ? "Emergency" : "Non-Emergency"}`);
   };
 
-  // Get the current time
-  const getCurrTime = () => {
-    const now = new Date();
-    return now.toLocaleTimeString();
-  };
-
   // Handle Clock In button click
+  function ClockInComponent() {
+    const [userData, setUserData] = useState({
+      caregiverID: emailId,
+      state: status,
+      geodata: locationString,
+      client: name,
+      timestamp: getCurrTime(),
+      active: true,
+      alert: emergencyActive
+    });
+  }
+
+
   const handleClockIn = () => {
     getLocation(() => {
       const time = getCurrTime();
-      const info = {
-        name,
-        location: locationString,
-        emailId, // Use the passed emailId
+      const updatedData = {
+        ...userData,
+        client: name,
+        geodata: locationString,
         currentState: selectState,
         timestamp: time,
-        active: true, // Active when clocking in
+        active: true,
       };
-      setSubmittedInfo(info);
-      alert(`Clocked In: ${JSON.stringify(info)}`);
+      setUserData(updatedData);
       setStatus(`Clocked in at ${time}`);
+      alert(`Clocked In: ${JSON.stringify(updatedData)}`);
+      console.log(emailId)
+      console.log(userData)
+      console.log(updatedData)
+      fetch(`http://127.0.0.1:5000/clockIn`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          caregiverID: emailId,
+          state: status,
+          geodata: locationString,
+          client: name,
+          timestamp: getCurrTime(),
+          active: true,
+          alert: emergencyActive
+        })
+      })
+        .then((response) => response.json())
+        .then((data) => console.log(data))
+        .catch((error) => console.error('Error:', error));
     });
   };
 
-  //     fetch('api/clockIn', {
-  //         method: 'POST',
-  //         headers: {
-  //           'Content-Type': 'application/json'
-  //     },
-  //         body: JSON.stringify({
-  //           data: caregiverID, name, location, , currentState, timestamp, active
-  //         })
-  //       })
-  //       .then(response => response.json())
-  //       .then(data => console.log(data))
-  //       .catch(error => console.error('Error:', error));
 
-  //   };
+
+
+
 
   // Handle Clock Out button click
   const handleClockOut = () => {

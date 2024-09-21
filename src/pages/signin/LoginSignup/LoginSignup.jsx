@@ -38,7 +38,7 @@ export default function LoginSignup() {
     
 
         console.log(userObject);
-        navigate('/clockin'); 
+        navigate('/clock-in'); 
     } else {
         navigate('/supervisor'); 
     }
