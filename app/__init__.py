@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, session
 from .mongo import save, get, remove, alert, getByCaregiverID
 from .db import db
 from . import oauth
@@ -14,8 +14,11 @@ app.register_blueprint(oauth.blueprint)
 CORS(app) 
 
 @app.route("/clockIn", methods=['POST'])
+@oauth.needs_login
 def clockIn():
     data = request.get_json()
+    careGiverID = session['email']
+    save(careGiverID, data['state'], data['geodata'], data['client'], data['timestamp'], data['active'], data["alert"])
     print(data)  # Log the incoming data to debug
     
     # Check if all necessary fields are present in the data
@@ -29,29 +32,53 @@ def clockIn():
 
 
 @app.route("/getActive", methods=['GET'])
+@oauth.needs_login
 def getActive():
     res = get()[0]
+    print(res)
     return res
 
 #Call this endpoint with this example /clockOut?caregiverid={id}
 @app.route("/clockOut", methods=['PUT'])
+@oauth.needs_login
 def clockOut():
-    queryCg = request.args.get('caregiverid')
+    careGiverID = session['email']
+    queryCg = careGiverID
     remove(queryCg)
 
     return f'removed {queryCg}'
 
 @app.route("/queryCareGiver", methods=['GET'])
+@oauth.needs_login
 def getCareGiver():
-    queryCg = request.args.get('caregiverid')
+    careGiverID = session['email']
+    queryCg = careGiverID
     return getByCaregiverID(queryCg)
 
 @app.route("/changeAlert", methods=['PUT'])
+@oauth.needs_login
 def changeAlert():
-    queryCg = request.args.get('caregiverid')
+    careGiverID = session['email']
+    queryCg = careGiverID
     alert(queryCg)
 
     return f'changed alert for {queryCg}'
+
+@app.route("/isAuthenticated", methods=['GET'])
+def isAuthenticated():
+    # this doesn't actually verify the token
+    is_authenticated = "google_id" in session
+    if not is_authenticated:
+        return jsonify({'is_authenticated': False})
+
+    user_info = {
+        'google_id': session['google_id'],
+        'email': session['email'],
+        'name': session['name'],
+        'is_authenticated': True
+    }
+
+    return jsonify(user_info)
 
     
 

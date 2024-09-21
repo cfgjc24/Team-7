@@ -1,6 +1,6 @@
 from pymongo import MongoClient
 from dotenv import load_dotenv
-from .db import db
+from app.db import db
 
 
 sessions = db["sessions"]
