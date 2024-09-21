@@ -11,7 +11,7 @@ const Supervisor = () => {
     const providers = [
       {
         caregiverid: "1",
-        caregivername: "Name A",
+        caregivername: "John Pork",
         phonenumber: "666-666-6666",
         state: "Emergency",
         client: "Client A",
@@ -21,7 +21,7 @@ const Supervisor = () => {
       },
       {
         caregiverid: "2",
-        caregivername: "Name B",
+        caregivername: "John Ham",
         phonenumber: "666-666-6666",
         state: "At home",
         client: "Client B",

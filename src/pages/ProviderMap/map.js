@@ -29,7 +29,7 @@ const ProviderMap = ({ positions, onMarkerClick }) => {
               color="red"
               fillColor="#f03"
               fillOpacity={0.5}
-              radius={500}
+              radius={600}
               eventHandlers={{
                 click: () => {
                   onMarkerClick(position);

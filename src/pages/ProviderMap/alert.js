@@ -10,12 +10,12 @@ const AlertLayout = () => {
   const [alertList, setAlertList] = useState([]);
 
   useEffect(() => {
-    setAlertList(["alert 1", "alert 2"]);
+    setAlertList(["Alert 1", "Alert 2"]);
   }, []);
 
   return (
-    <Container>
-      <p>Alerts</p>
+    <Container sx={{ marginTop: "20px" }}>
+      <h2>Alerts</h2>
       <hr></hr>
       <List>
         {alertList.map((alert, index) => (
