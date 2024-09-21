@@ -1,21 +1,10 @@
 from pymongo import MongoClient
 from dotenv import load_dotenv
-import os
-import certifi
+from db import db
 
 
-dotenv_path = 'app/.env'
-load_dotenv(dotenv_path)
-
-
-os.environ["PYTHONWARNINGS"] = "ignore:Unverified HTTPS request"
-
-mongo = MongoClient(os.getenv("MONGODB"), tlsCAFile=certifi.where())
-
-
-
-db = mongo['dev']
 sessions = db["sessions"]
+caregivers = db["caregivers"]
 
 
 
@@ -27,10 +16,21 @@ def get():
     for session in sessions.find():
         if session.get('active', ""):
             res.append(session)
+            
+            caregiverDict = caregivers.find_one({'caregiverID': session['caregiverID']})
+            if caregiverDict:
+                res[-1] = res[-1] | caregiverDict
+            else:
+                print(f"Caregiver not found {session['caregiverID']}")
+            
     return res
 
 #doesnt actually remove. just inactivates a certain field
 def remove(caregiverID):
     result = sessions.update_one({'caregiverID': caregiverID}, {'$set': {'active': False}})
+
+
+
+
     
 
