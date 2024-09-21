@@ -40,7 +40,7 @@ const Supervisor = () => {
 
   return (
     <Grid container>
-      <Grid item xs style={{ flexGrow: 0.2 }}>
+      <Grid item xs style={{ flexGrow: 0.1 }}>
         <Provider
           providers={providerList}
           onProviderSelect={handleProviderSelect}
@@ -55,8 +55,8 @@ const Supervisor = () => {
           selectedProvider={selectedProvider}
         />
       </Grid>
-      <Grid item xs style={{ flexGrow: 0.8 }}>
-        <AlertLayout positions={providerList} />
+      <Grid item xs style={{ flexGrow: 0.5 }}>
+        <AlertLayout alertList={providerList} />
       </Grid>
     </Grid>
   );
