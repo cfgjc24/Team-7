@@ -10,7 +10,7 @@ const AlertLayout = () => {
   const [alertList, setAlertList] = useState([]);
 
   useEffect(() => {
-    setAlertList(["alert 1", "alert 2"]);
+    setAlertList(["Alert 1", "Alert 2"]);
   }, []);
 
   return (

@@ -8,8 +8,9 @@ import {
   ListItemText,
   Typography,
   Button,
+  IconButton,
 } from "@mui/material";
-
+import ManageSearchIcon from "@mui/icons-material/ManageSearch";
 const Provider = ({
   providers,
   onProviderSelect,
@@ -24,6 +25,17 @@ const Provider = ({
         label="Search by name"
         variant="outlined"
       />
+      <IconButton>
+        <ManageSearchIcon
+          style={{
+            fontSize: 50,
+            marginLeft: 10,
+            marginRight: -20,
+            marginTop: -10,
+          }}
+        />
+      </IconButton>
+
       <hr />
       {selectedProvider ? (
         <div>
@@ -47,6 +59,7 @@ const Provider = ({
                 borderColor: "black",
                 backgroundColor: "rgba(0, 0, 0, 0.1)",
               },
+              marginTop: "10px",
             }}
           >
             Back to List
