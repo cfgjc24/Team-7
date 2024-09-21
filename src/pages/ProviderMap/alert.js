@@ -1,33 +1,27 @@
 import React, { useState, useEffect } from "react";
 import {
   Container,
-  TextField,
   Divider,
   List,
   ListItem,
   ListItemText,
 } from "@mui/material";
-const Provider = () => {
-  const [providerList, setProviderList] = useState([]);
+const AlertLayout = () => {
+  const [alertList, setAlertList] = useState([]);
 
   useEffect(() => {
-    setProviderList(["provider 1", "provider 2"]);
+    setAlertList(["alert 1", "alert 2"]);
   }, []);
 
   return (
     <Container>
-      <p>Find Provider</p>
-      <TextField
-        id="search-provider"
-        label="Search by name"
-        variant="outlined"
-      />
+      <p>Alerts</p>
       <hr></hr>
       <List>
-        {providerList.map((provider, index) => (
+        {alertList.map((alert, index) => (
           <React.Fragment key={index}>
             <ListItem>
-              <ListItemText primary={provider} />
+              <ListItemText primary={alert} />
             </ListItem>
             <Divider component="li" />
           </React.Fragment>
@@ -36,4 +30,4 @@ const Provider = () => {
     </Container>
   );
 };
-export default Provider;
+export default AlertLayout;
