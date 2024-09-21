@@ -13,6 +13,10 @@ import {
   FormControlLabel,
 } from "@mui/material";
 
+<style>
+  @import
+  url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap');
+</style>;
 // ClockInOut Component
 const ClockInOut = ({ emailId }) => {
   const [status, setStatus] = useState("Not clocked in");
@@ -143,43 +147,67 @@ const ClockInOut = ({ emailId }) => {
   };
 
   return (
-    <Container maxWidth="sm">
+    <Container>
+      <Typography
+        variant="h4"
+        sx={{
+          top: "0",
+          left: "0",
+          position: "absolute",
+          margin: "10px",
+          fontFamily: "Crimson Text",
+        }}
+      >
+        Clock In
+      </Typography>
+      <FormControlLabel
+        control={
+          <Switch
+            checked={emergencyActive}
+            onChange={handleEmergencyToggle}
+            sx={{
+              "& .MuiSwitch-switchBase.Mui-checked": {
+                color: "#C70039", // Color of the thumb when checked
+              },
+              "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
+                backgroundColor: "#C70039", // Color of the track when checked
+              },
+              "& .MuiSwitch-track": {
+                backgroundColor: "#ccc", // Default color of the track when unchecked
+              },
+            }}
+          />
+        }
+        label="Emergency"
+        sx={{
+          top: "0",
+          right: "0",
+          position: "absolute",
+          marginTop: "5px",
+        }}
+      />
       <Box textAlign="center" mt={5}>
-        <Typography variant="h4" gutterBottom>
-          TimeSheet
-        </Typography>
-
-        <Box
-          mt={5}
-          mb={5}
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
+        <Typography variant="h6">Status: {status}</Typography>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleClockIn}
+          style={{
+            marginRight: "10px",
+            marginBottom: "10px",
+            marginTop: "5px",
+          }}
         >
-          <Typography variant="h6">Status: {status}</Typography>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleClockIn}
-            style={{ marginRight: "10px" }}
-          >
-            Clock In
-          </Button>
-          <Typography variant="body1" gutterBottom>
-            Click to clock in to shift
-          </Typography>
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={handleClockOut}
-            style={{ marginRight: "10px" }}
-          >
-            Clock Out
-          </Button>
-          <Typography variant="body1" gutterBottom>
-            Click to clock out of shift
-          </Typography>
-        </Box>
+          Clock In
+        </Button>
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={handleClockOut}
+          style={{ marginRight: "10px" }}
+        >
+          Clock Out
+        </Button>
       </Box>
 
       <Box
@@ -188,26 +216,13 @@ const ClockInOut = ({ emailId }) => {
         display="flex"
         flexDirection="column"
         alignItems="center"
-      >
-        <FormControlLabel
-          control={
-            <Switch
-              checked={emergencyActive}
-              onChange={handleEmergencyToggle}
-              color="secondary"
-            />
-          }
-          label="Emergency"
-        />
-        <Typography variant="body1" gutterBottom>
-          Toggle Emergency (Emergency/Non-Emergency)
-        </Typography>
-      </Box>
+      ></Box>
 
-      <Typography align="left">Enter your client name below</Typography>
-      <BasicTextFields setName={setName} />
-
-      <Typography align="left">Enter your shift status below</Typography>
+      <BasicTextFields
+        label="Enter Client Name"
+        variant="outlined"
+        setName={setName}
+      />
       <BasicSelect setSelectState={setSelectState} />
 
       <Box
@@ -239,9 +254,22 @@ const BasicSelect = ({ setSelectState }) => {
   };
 
   return (
-    <FormControl fullWidth>
+    <FormControl
+      sx={{
+        "& > :not(style)": { width: "10x" },
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "50vh",
+        "& > :not(style)": { m: 1, width: "40ch" },
+      }}
+    >
       <InputLabel id="state-select-label">Current State</InputLabel>
-      <Select labelId="state-select-label" onChange={handleChange}>
+      <Select
+        labelId="state-select-label"
+        onChange={handleChange}
+        // Adjust marginTop to position below the label
+      >
         <MenuItem value="Recreational External Activity">Recreational</MenuItem>
         <MenuItem value="Leisure At Home Activity">Leisure</MenuItem>
         <MenuItem value="Emotional Support">Emotional</MenuItem>
@@ -259,7 +287,14 @@ const BasicTextFields = ({ setName }) => {
   return (
     <Box
       component="form"
-      sx={{ "& > :not(style)": { m: 1, width: "63ch" } }}
+      sx={{
+        "& > :not(style)": { width: "10x" },
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "30vh",
+        "& > :not(style)": { m: 1, width: "40ch" },
+      }}
       noValidate
       autoComplete="off"
     >
@@ -272,7 +307,7 @@ const BasicTextFields = ({ setName }) => {
     </Box>
   );
 };
-
+console.log("save");
 export default ClockInOut;
 export { BasicSelect };
 export { BasicTextFields };
