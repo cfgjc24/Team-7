@@ -23,7 +23,7 @@ export default function LoginSignup() {
         } else {
             passwordRef.current.setCustomValidity('');
         }
-
+            if(email != 'supervisor@gmail.com'){
         const userObject = {
             caregiverID: email,
             state: '', 
@@ -33,11 +33,14 @@ export default function LoginSignup() {
             active: true,
             action: action,
         };
-        console.log(userObject);
+    
 
-       
-        setEmail('');
-        setPassword('');
+        console.log(userObject);
+        navigate('/clockin'); 
+    } else {
+        navigate('/supervisor'); 
+    }
+        
     };
 
     const handleKeyDown = (event) => {
