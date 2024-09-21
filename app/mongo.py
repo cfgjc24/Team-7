@@ -11,9 +11,7 @@ caregivers = db["caregivers"]
 def save(caregiverID, state, geodata, client, timestamp, active, alert):
     for session in sessions.find():
         if session.get('caregiverID', "") == caregiverID and session.get('active', False):
-            print("UPDATING")
             sessions.update_one({'_id': session.get("_id")}, {'$set': {'caregiverID': caregiverID, 'state': state, 'geodata': geodata, 'client': client, 'timestamp': timestamp, "active": active, "alert": alert}})
-            print("what happened")
             return
         
     sessions.insert_one({'caregiverID': caregiverID, 'state': state, 'geodata': geodata, 'client': client, 'timestamp': timestamp, "active": active, "alert": alert})
@@ -30,7 +28,7 @@ def get():
             if caregiverDict:
                 activeUsers[-1] = activeUsers[-1] | caregiverDict
             # else:
-                # print(f"Caregiver not found {session['caregiverID']}")
+            #     print(f"Caregiver not found {session['caregiverID']}")
             
             del activeUsers[-1]["_id"]
             if session.get('alert', False):
