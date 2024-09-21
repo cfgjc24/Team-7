@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-
 import { MapContainer, TileLayer, Marker } from "react-leaflet";
 
 const link = document.createElement("link");

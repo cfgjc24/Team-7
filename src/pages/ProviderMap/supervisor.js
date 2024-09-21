@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import ProviderMap from "./map";
-import Provider from "./provider";
+import { Provider, ProviderMap } from "./provider";
 import Grid from "@mui/material/Grid2";
 import AlertLayout from "./alert";
 const Supervisor = () => {
