@@ -56,7 +56,7 @@ const Supervisor = () => {
         />
       </Grid>
       <Grid item xs style={{ flexGrow: 0.8 }}>
-        <AlertLayout />
+        <AlertLayout positions={providerList} />
       </Grid>
     </Grid>
   );
