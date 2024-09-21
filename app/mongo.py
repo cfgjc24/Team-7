@@ -10,8 +10,6 @@ load_dotenv(dotenv_path)
 
 os.environ["PYTHONWARNINGS"] = "ignore:Unverified HTTPS request"
 
-
-print(os.getenv("MONGODB"))
 mongo = MongoClient(os.getenv("MONGODB"), tlsCAFile=certifi.where())
 
 
@@ -22,9 +20,17 @@ sessions = db["sessions"]
 
 
 def save(caregiverID, state, geodata, client, timestamp, active):
-    sessions.insert_one({'caregiverID': caregiverID, 'state': state, 'geodata': geodata, 'client': client, 'timestamp': timestamp})
+    sessions.insert_one({'caregiverID': caregiverID, 'state': state, 'geodata': geodata, 'client': client, 'timestamp': timestamp, "active": active})
 
 def get():
+    res = []
     for session in sessions.find():
-        if session.get('state', "") == 'active':
-            return session
+        if session.get('active', ""):
+            res.append(session)
+    return res
+
+#doesnt actually remove. just inactivates a certain field
+def remove(caregiverID):
+    result = sessions.update_one({'caregiverID': caregiverID}, {'$set': {'active': False}})
+    
+
