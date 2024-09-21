@@ -8,13 +8,8 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Layout from "./components/Layout";
 import ClockInOut from "./pages/ClockInPage/clockin.js"; /*Automatically loads in page*/
 import Supervisor from "./pages/ProviderMap/supervisor.js"; /*Automatically loads in page*/
-import LoginSignup from "./pages/signin/LoginSignup/LoginSignup.jsx"; /*Automatically loads in page*/
-import {
-  ProtectedRoute,
-  ExternalNavigate,
-} from "./components/ProtectedRoute/protectedroute.js";
 import HomePage from "./pages/Home/home.js";
-import ProviderMap from "./pages/ProviderMap/map.js";
+import { ProtectedRoute } from "./components/ProtectedRoute/protectedroute.js";
 
 //const ProviderMap = React.lazy(() => import("./pages/ProviderMap/supervisor.js"));
 // const ClockInPage = React.lazy(() => import("./pages/ClockInPage/clockin.js"));
@@ -42,10 +37,9 @@ const AuthContainer = () => {
         }
       })
       .catch((error) => console.error("ERROR:", error));
-  }, [authenticatedUser.isAuthenticated]);
+  }, []);
 
   const isAuthenticated = authenticatedUser.is_authenticated;
-  console.log(authenticatedUser.is_authenticated);
 
   return (
     <AuthContext.Provider value={authenticatedUser}>
@@ -75,7 +69,7 @@ const AuthContainer = () => {
               element={
                 <ProtectedRoute
                   isAuthenticated={isAuthenticated}
-                  element={<ProviderMap />}
+                  element={<Supervisor />}
                 />
               }
             />
