@@ -17,6 +17,7 @@ const Supervisor = () => {
         client: "Client A",
         active: true,
         geodata: [40.728, -74.077],
+        alert: true,
       },
       {
         caregiverid: "2",
@@ -26,6 +27,7 @@ const Supervisor = () => {
         client: "Client B",
         active: true,
         geodata: [40.7128, -74.006],
+        alert: false,
       },
     ];
 

@@ -7,6 +7,7 @@ import {
   ListItem,
   ListItemText,
   Typography,
+  Button,
 } from "@mui/material";
 
 const Provider = ({
@@ -36,9 +37,20 @@ const Provider = ({
           <Typography>
             Coordinates: {selectedProvider.geodata.join(", ")}
           </Typography>
-          <button onClick={() => setSelectedProvider(null)}>
+          <Button
+            variant="outlined"
+            onClick={() => setSelectedProvider(null)}
+            sx={{
+              color: "black",
+              borderColor: "black",
+              "&:hover": {
+                borderColor: "black",
+                backgroundColor: "rgba(0, 0, 0, 0.1)",
+              },
+            }}
+          >
             Back to List
-          </button>
+          </Button>
         </div>
       ) : (
         <List>
